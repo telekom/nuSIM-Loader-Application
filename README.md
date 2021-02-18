@@ -41,29 +41,6 @@ To acually _use_ the adapter, its class name has to be configured into the defau
 
 The adapter will have access to the JSON configuration residing below JSON path `nusimSimAdapter`. Any needed parameters can be defined there.
 
-The **HUAWEI nuSIM adapter** is an implementation of this adapter for HUAWEI specific hardware.
-
-#### Using the HUAWEI nuSIM adapter
-
-The **HUAWEI nuSIM adapter** is an implementation of the nuSIM adapter interface `de.scoopgmbh.nusimapp.nusimsim.adapter.NusimSimAdapter`. Its implementation can be found in submodule `nusimloader-plugin-huawei`.
-
-To enable it, replace the _complete_ section `"nusimSimAdapter"` in `defaultConfig.json` with:
-
-```
-"nusimSimAdapter": {
-  "adapterClass": "de.scoopgmbh.nusimapp.nusimsim.adapter.huawei.HuaweiNusimSimAdapter",
-  "serialPort": "/dev/ttyXRUSB0",
-  "baudRate": 9600,
-  "commandRetries": 3,
-  "commandTimeoutMs": 10000,
-  "commandRetryDelayMs": 500
-},
-```
-
-_(Note: on a fresh installation those lines are already there, but commented out with `//`. Just remove the comments, and add comments to the original section.)_
-
-Adjust the settings `serialPort` and `baudRate` according to your environment. After changing the settings, restart the server.
-
 #### Implementing a specific CM adapter (IF3 adapter)
 
 To create a specific CM adapter for communicating with a Chip Manufacturer, you have to create a
@@ -169,7 +146,7 @@ When starting the application for the first time, there is no configuration file
 - The Server will be listening at port `${server.port}`, will *not* offer HTTPS and as such the GUI will be available at http://localhost:${server.port}
 - The Database that is used must be available at `${database.jdbcURL}` using user/password = ${database.username}/${database.password} as credentials.
 - The FileImporter will watch for input files at `${fileimport.importBaseDir}`. This directory is created if it does not exist.
-- The pluggable IF2 nuSIM adapter is per default configured to use the dummy class `${nusimSimAdapter.adapterClass}` which is a simple HTTP simulator implementing the nuSIM adapter interface. Most likely you will want to use another adapter implementation. For this you must change the configuration section `"nusimSimAdapter"` in file `defaultConfig.json` before the first start. See section "Implementing a specific nuSIM adapter" belowabove.
+- The pluggable IF2 nuSIM adapter is per default configured to use the dummy class `${nusimSimAdapter.adapterClass}` which is a simple HTTP simulator implementing the nuSIM adapter interface. Most likely you will want to use another adapter implementation. For this you must change the configuration section `"nusimSimAdapter"` in file `defaultConfig.json` before the first start. See section "Implementing a specific nuSIM adapter (IF2 adapter)" above.
 
 You can always restore the default configuration by deleting your custom configuration file `nusimapp.conf` residing in `NUSIMAPP_HOME_DIR/conf` (requires restart)
 
