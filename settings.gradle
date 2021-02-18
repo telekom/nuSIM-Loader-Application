@@ -1,0 +1,4 @@
+include 'nusimapp'
+include 'nusimloader-api'
+include 'gui'
+include 'osdfcreator'

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="SCOOP Software GmbH">
+        <createTable tableName="EIDS">
+            <column name="EID" type="varchar(32)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATE_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUSIMCERT" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ICCID" type="text">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="ERRORTEXT" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="2" author="SCOOP Software GmbH">
+        <createTable tableName="PROFILES">
+            <column name="EID" type="varchar(32)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATE_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUSIMCERT" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="MAC" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ENCP" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EKPUBDP" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="SIGEKPUB" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="KPUBDP" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="SIGKPUBDP" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="SCOOP Software GmbH">
+        <addColumn tableName="EIDS">
+            <column name="PRODUCT" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="4" author="SCOOP Software GmbH">
+        <dropColumn tableName="EIDS" columnName="PRODUCT"/>
+        <addColumn tableName="EIDS">
+            <column name="REFINFO1" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="REFINFO2" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="REFINFO3" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="5" author="SCOOP Software GmbH">
+        <addColumn tableName="PROFILES">
+            <column name="REFERENCE_ID" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="6" author="SCOOP Software GmbH">
+        <createTable tableName="REFERENCE_IDS">
+            <column name="REFERENCE_ID" type="varchar(32)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="REQUESTED_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUEST_COUNT" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="REFINFO1" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="REFINFO2" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="REFINFO3" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="AVAILABLE_TS" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

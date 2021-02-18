@@ -1,0 +1,63 @@
+{
+  "@fortawesome/fontawesome-common-types@0.1.7": {
+    "licenses": "Custom: https://img.shields.io/npm/v/",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "Dave Gandy",
+    "email": "dave@fontawesome.com",
+    "url": "http://twitter.com/davegandy",
+    "name": "@fortawesome/fontawesome-common-types",
+    "version": "0.1.7",
+    "licenseText": "Font Awesome Pro License\n------------------------\n\nFont Awesome Pro is commercial software that requires a paid license. Full\nFont Awesome Pro license: https://fontawesome.com/license.\n\n# Commercial License\nThe Font Awesome Pro commercial license allows you to pay for FA Pro once, own\nit, and use it just about everywhere you'd like.\n\n# Attribution\nAttribution is not required by the Font Awesome Pro commercial license.\n\n# Brand Icons\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-common-types",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-common-types/LICENSE.txt"
+  },
+  "@fortawesome/fontawesome-free-solid@5.0.13": {
+    "licenses": "(CC-BY-4.0 AND MIT)",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "Dave Gandy",
+    "email": "dave@fontawesome.com",
+    "url": "http://twitter.com/davegandy",
+    "name": "@fortawesome/fontawesome-free-solid",
+    "version": "5.0.13",
+    "licenseText": "Font Awesome Free License\n-------------------------\n\nFont Awesome Free is free, open source, and GPL friendly. You can use it for\ncommercial projects, open source projects, or really almost whatever you want.\nFull Font Awesome Free license: https://fontawesome.com/license.\n\n# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\nIn the Font Awesome Free download, the CC BY 4.0 license applies to all icons\npackaged as SVG and JS file types.\n\n# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)\nIn the Font Awesome Free download, the SIL OLF license applies to all icons\npackaged as web and desktop font files.\n\n# Code: MIT License (https://opensource.org/licenses/MIT)\nIn the Font Awesome Free download, the MIT license applies to all non-font and\nnon-icon files.\n\n# Attribution\nAttribution is required by MIT, SIL OLF, and CC BY licenses. Downloaded Font\nAwesome Free files already contain embedded comments with sufficient\nattribution, so you shouldn't need to do anything additional when using these\nfiles normally.\n\nWe've kept attribution comments terse, so we ask that you do not actively work\nto remove them from files, especially code. They're a great way for folks to \nlearn about Font Awesome.\n\n# Brand Icons\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-free-solid",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-free-solid/LICENSE.txt",
+    "typeOfLicense": "Permissive"
+  },
+  "@fortawesome/fontawesome@1.1.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "Dave Gandy",
+    "email": "dave@fontawesome.com",
+    "url": "http://twitter.com/davegandy",
+    "name": "@fortawesome/fontawesome",
+    "version": "1.1.8",
+    "licenseText": "Font Awesome Free License\n-------------------------\n\nFont Awesome Free is free, open source, and GPL friendly. You can use it for\ncommercial projects, open source projects, or really almost whatever you want.\nFull Font Awesome Free license: https://fontawesome.com/license.\n\n# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\nIn the Font Awesome Free download, the CC BY 4.0 license applies to all icons\npackaged as SVG and JS file types.\n\n# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)\nIn the Font Awesome Free download, the SIL OLF license applies to all icons\npackaged as web and desktop font files.\n\n# Code: MIT License (https://opensource.org/licenses/MIT)\nIn the Font Awesome Free download, the MIT license applies to all non-font and\nnon-icon files.\n\n# Attribution\nAttribution is required by MIT, SIL OLF, and CC BY licenses. Downloaded Font\nAwesome Free files already contain embedded comments with sufficient\nattribution, so you shouldn't need to do anything additional when using these\nfiles normally.\n\nWe've kept attribution comments terse, so we ask that you do not actively work\nto remove them from files, especially code. They're a great way for folks to \nlearn about Font Awesome.\n\n# Brand Icons\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome/LICENSE.txt",
+    "typeOfLicense": "Permissive"
+  },
+  "@fortawesome/vue-fontawesome@0.0.22": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FortAwesome/vue-fontawesome",
+    "name": "@fortawesome/vue-fontawesome",
+    "version": "0.0.22",
+    "licenseText": "Copyright 2018 Fonticons, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of\nthis software and associated documentation files (the \"Software\"), to deal in\nthe Software without restriction, including without limitation the rights to\nuse, copy, modify, merge, publish, distribute, sublicense, and/or sell copies\nof the Software, and to permit persons to whom the Software is furnished to do\nso, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/vue-fontawesome",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/vue-fontawesome/README.md",
+    "typeOfLicense": "Permissive"
+  },
+  "abbrev@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/abbrev-js",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "name": "abbrev",
+    "version": "1.1.1",
+    "licenseText": "This software is dual-licensed under the ISC and MIT licenses.\nYou may use this software under EITHER of the following licenses.\n\n----------\n\nThe ISC License\n\nCopyright (c) Isaac Z. Schlueter and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n----------\n\nCopyright Isaac Z. Schlueter and Contributors\nAll rights reserved.\n\nPermission is hereby granted, free of charge, to any person\nobtaining a copy of this software and associated documentation\nfiles (the \"Software\"), to deal in the Software without\nrestriction, including without limitation the rights to use,\ncopy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the\nSoftware is furnished to do so, subject to the following\nconditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\nHOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\nOTHER DEALINGS IN THE SOFTWARE.",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/abbrev",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/abbrev/LICENSE",
+    "copyright": "Copyright (c) Isaac Z. Schlueter and Contributors*",
+    "typeOfLicense": "Permissive"
+  }
+}

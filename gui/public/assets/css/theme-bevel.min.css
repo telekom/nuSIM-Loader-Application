@@ -1,0 +1,7 @@
+/*!
+ * Telekom Components v2.2.4 [2018-04-19]
+ * Copyright 2014-2018 Deutsche Telekom AG
+ */
+
+.btn-bevel.btn-default{background:#fff;background:linear-gradient(top,#fff,#e7e7e7);filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff", endColorstr="#e7e7e7",GradientType=0)";text-shadow:0 1px 0 #fff}.btn-bevel.btn-primary{background:#fe319a;background:linear-gradient(top,#fe319a,#ce006a);filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr="#fe319a", endColorstr="#ce006a",GradientType=0)";text-shadow:0 -1px 0 #cc0069}
+/*# sourceMappingURL=theme-bevel.min.css.map */

@@ -1,0 +1,81 @@
+{
+  "database": {
+    "dialect": "POSTGRES",
+    "executeLogging": false,
+    "jdbcURL": "jdbc:postgresql://localhost:5432/postgres?tcpKeepAlive=true",
+    "password": "postgres",
+    "username": "postgres"
+  },
+  "nusimSimAdapter": {
+    "adapterClass": "de.scoopgmbh.nusimapp.nusimsim.adapter.NusimSimHTTPAdapter",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "url": "http://localhost:14003/nusim/"
+  },
+  "fileimport": {
+    "certificateFileEndings": [".zip", ".tgz", ".tar.gz", ".tar"],
+    "eidFileEndings": [".eids", ".txt", ".csv"],
+    "importBaseDir": "import"
+  },
+  "if1": {
+    "certCM": "not used",
+    "product": "not used",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "url": "http://localhost:14001/nusim/"
+  },
+  "if3": {
+    "adapterClass": "de.scoopgmbh.nusimapp.if3.IF3HTTPAdapter",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "url": "http://localhost:14002/nusim/"
+  },
+  "provisioning": {
+    "mode": "single",
+    "rootKeyId": "62D20AD6B74C15A18374D039B822B9D6BD463C84",
+    "singleprovisioning": {
+      "certificateSource": "cm"
+    }
+  },
+  "server": {
+    "baseDir": ".",
+    "pathPrefix": "/",
+    "port": 8088,
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "enabled": false,
+      "password": "",
+      "supportedCipherSuites": [
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+        "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_DHE_DSS_WITH_AES_128_GCM_SHA256",
+        "TLS_DHE_DSS_WITH_AES_256_GCM_SHA384",
+        "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
+        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+      ],
+      "supportedProtocols": ["TLSv1.2", "TLSv1"]
+    }
+  }
+}

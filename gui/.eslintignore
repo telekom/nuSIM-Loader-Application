@@ -1,0 +1,4 @@
+/dist/
+/tests/unit/
+/public/assets/js/
+/**/*.unit.js

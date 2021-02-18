@@ -1,0 +1,105 @@
+{
+  "server": {
+    "baseDir": ".",
+    "port": 8088,
+    "pathPrefix": "/",
+    "ssl": {
+      "enabled": false,
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": "",
+      "supportedCipherSuites": [
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+        "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_DHE_DSS_WITH_AES_128_GCM_SHA256",
+        "TLS_DHE_DSS_WITH_AES_256_GCM_SHA384",
+        "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
+        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+      ],
+      "supportedProtocols": [
+        "TLSv1.2",
+        "TLSv1"
+      ]
+    }
+  },
+  "provisioning": {
+    "mode": "single",
+    "rootKeyId": "62D20AD6B74C15A18374D039B822B9D6BD463C84",
+    "kPubCI": "BEUWaTcKOcFKoWYEipOcYGHcYGZBjohftxtNWVZH4C2ih1U6U4oIGyy84u7HkEP03GdDcUVvul2Bi+WLNTk7O/Q=",
+    "certificateSource": "cm",
+    "demoModeFeature": false,
+    "repeatableDownloadsFeature": false
+  },
+  "if1": {
+    "url": "http://localhost:14001/nusim/",
+    "certCM": "not used",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "maxContentSize": 20000000,
+    "KpubDP": {}
+  },
+  "if3": {
+    "adapterClass": "de.scoopgmbh.nusimapp.if3.IF3HTTPAdapter",
+    "url": "http://localhost:14002/nusim/",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "maxContentSize": 20000000
+  },
+  "nusimSimAdapter": {
+    "adapterClass": "de.scoopgmbh.nusimapp.nusimsim.adapter.NusimSimHTTPAdapter",
+    "url": "http://localhost:14003/nusim/",
+    "ssl": {
+      "certDir": "server/src/test/resources/selfsignedcerts",
+      "password": ""
+    },
+    "maxContentSize": 20000000
+  },
+//  "nusimSimAdapter": {
+//    "adapterClass": "de.scoopgmbh.nusimapp.nusimsim.adapter.huawei.HuaweiNusimSimAdapter",
+//    "serialPort": "/dev/ttyXRUSB0",
+//    "baudRate": 9600,
+//    "commandRetries": 3,
+//    "commandTimeoutMs": 10000,
+//    "commandRetryDelayMs": 500
+//  },
+  "database": {
+    "dialect": "POSTGRES",
+    "executeLogging": false,
+    "username": "postgres",
+    "password": "cG9zdGdyZXM=",
+    "jdbcURL": "jdbc:postgresql://localhost:5432/postgres?tcpKeepAlive=true"
+  },
+  "fileimport": {
+    "importBaseDir": "import",
+    "eidFileEndings": [
+      ".eids",
+      ".txt",
+      ".csv"
+    ],
+    "certificateFileEndings": [
+      ".zip",
+      ".tgz",
+      ".tar.gz",
+      ".tar"
+    ]
+  }
+}

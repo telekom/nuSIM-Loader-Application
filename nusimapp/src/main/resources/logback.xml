@@ -1,0 +1,65 @@
+<configuration scan="true" debug="false">
+    <property resource="environment.properties"/>
+
+    <if condition='isDefined("NUSIMAPP_LOGGING_DIR")'>
+        <then>
+            <property name="EFFECTIVE_LOG_DIR" value="${NUSIMAPP_LOGGING_DIR}" />
+        </then>
+        <else>
+            <if condition='isDefined("NUSIMAPP_HOME_DIR")'>
+                <then>
+                    <property name="EFFECTIVE_LOG_DIR" value="${NUSIMAPP_HOME_DIR}/logs" />
+                </then>
+                <else>
+                    <property name="EFFECTIVE_LOG_DIR" value="nusim-data/logs" />
+                </else>
+            </if>
+        </else>
+    </if>
+
+    <root level="${NUSIMAPP_LOG_LEVEL:-TRACE}"/>
+
+    <!-- Development environment only: log to console -->
+    <if condition='property("NUSIMAPP_LOG_CONSOLE").contains("true")'>
+        <then>
+            <appender name="DEVCON" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>${logPattern}</pattern>
+                </encoder>
+            </appender>
+            <root>
+                <appender-ref ref="DEVCON"/>
+            </root>
+        </then>
+    </if>
+
+    <!-- File appenders -->
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${EFFECTIVE_LOG_DIR}/${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${EFFECTIVE_LOG_DIR}/${appName}.log.%d{yyyy-MM-dd}</fileNamePattern>
+
+            <!-- keep 50 days' worth of history -->
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Individual logger tuning -->
+
+    <logger name="io.netty.handler.codec.http.websocketx" level="INFO"/>
+    <logger name="io.netty.util.internal" level="INFO"/>
+    <logger name="org.eclipse.jetty" level="INFO"/>
+    <logger name="org.jooq.impl.DefaultConnectionProvider" level="INFO"/>
+    <logger name="com.zaxxer" level="INFO"/>
+    <logger name="com.opentable.db.postgres.embedded" level="INFO"/>
+
+</configuration>

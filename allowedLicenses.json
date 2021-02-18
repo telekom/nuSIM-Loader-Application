@@ -1,0 +1,52 @@
+{
+  "allowedLicenses": [
+    {
+      "moduleLicense": "Apache License, Version 2.0"
+    },
+    {
+      "moduleLicense": "Bouncy Castle Licence"
+    },
+    {
+      "moduleLicense": "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0"
+    },
+    {
+      "moduleLicense": "Common Public License Version 1.0"
+    },
+    {
+      "moduleLicense": "Creative Commons Legal Code"
+    },
+    {
+      "moduleLicense": "Eclipse Public License - v 1.0"
+    },
+    {
+      "moduleLicense": "GNU GENERAL PUBLIC LICENSE, Version 2 + Classpath Exception"
+    },
+    {
+      "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1"
+    },
+    {
+      "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE, Version 3"
+    },
+    {
+      "moduleLicense": "MIT License"
+    },
+    {
+      "moduleLicense": "Mozilla Public License Version 1.1"
+    },
+    {
+      "moduleLicense": "New BSD License"
+    },
+    {
+      "moduleLicense": "PUBLIC DOMAIN"
+    },
+    {
+      "moduleLicense": "The 2-Clause BSD License"
+    },
+    {
+      "moduleLicense": "The PostgreSQL License"
+    },
+    {
+      "moduleLicense": null
+    }
+  ]
+}

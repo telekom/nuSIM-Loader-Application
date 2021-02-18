@@ -1,0 +1,470 @@
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.ast.Node
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigParseOptions
+import com.typesafe.config.ConfigSyntax
+import org.jooq.codegen.GenerationTool
+import org.jooq.meta.jaxb.Database
+import org.jooq.meta.jaxb.Generate
+import org.jooq.meta.jaxb.Generator
+import org.jooq.meta.jaxb.Jdbc
+import org.jooq.meta.jaxb.Target
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.typesafe:config:1.3.1'
+        classpath 'org.jooq:jooq-codegen:3.11.11'
+        classpath 'org.postgresql:postgresql:42.2.2'
+        classpath "org.liquibase:liquibase-core:3.2.0"
+        classpath 'com.vladsch.flexmark:flexmark-all:0.34.4'
+        classpath('gradle.plugin.com.github.honourednihilist:gradle-postgresql-embedded:0.4.0') {
+            exclude group: 'de.flapdoodle.embed', module: 'de.flapdoodle.embed.process' // exclude this old dependency
+        }
+        // instead include this new version, which is compatible with Java 11
+        classpath 'de.flapdoodle.embed:de.flapdoodle.embed.process:2.1.2'
+        // gradle-postgresql-embedded also needs commons-io but doesn't require it
+        classpath 'commons-io:commons-io:2.4'
+
+        classpath 'org.asciidoctor:asciidoctorj:2.2.0'
+        classpath 'org.jruby:jruby-complete:9.1.0.0'
+    }
+}
+
+plugins {
+    id "com.moowork.node" version "1.3.1"
+    id 'org.liquibase.gradle' version '1.2.4'
+    id "com.github.hierynomus.license-report" version "0.15.0"
+    id 'com.github.jk1.dependency-license-report' version '1.13'
+    id 'org.asciidoctor.jvm.convert' version '3.1.0'
+    id 'org.asciidoctor.jvm.pdf' version '3.1.0'
+    id "java"
+}
+
+// the gradle-postgresql-embedded plugin must be enabled the old way (without "plugins" dsl)
+// because we must set custom classpath, see above dependencies section
+apply plugin: 'com.github.honourednihilist.gradle-postgresql-embedded'
+postgresEmbedded {
+    port = 54321
+}
+
+ext {
+    versions = [
+            slf4j   : "1.7.25",
+            logback : "1.2.3",
+            guava   : "28.0-jre",
+            tsConfig: "1.3.1",
+            ratpack : "1.5.4",
+            junit   : "4.12",
+            mockito : "2.28.2",
+            jooq    : "3.11.11",
+    ]
+}
+
+wrapper {
+    gradleVersion = '5.4.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:all"
+            options.encoding = 'utf-8'
+            sourceCompatibility = '1.8'
+            targetCompatibility = '1.8'
+        }
+    }
+}
+
+
+project(':gui') {
+    apply plugin: 'com.moowork.node'
+
+    node {
+        version = '8.11.2'
+        npmVersion = '5.6.0'
+        yarnVersion = '1.7.0'
+        download = true // enable automatic download
+    }
+
+    task build(type: Exec, dependsOn: yarn) {
+        workingDir "${projectDir}"
+        commandLine '.gradle/yarn/yarn-v1.7.0/bin/yarn', 'build'
+        outputs.dir file("${project.projectDir}/dist")
+        inputs.dir file("${project.projectDir}/public")
+        inputs.dir file("${project.projectDir}/src")
+        inputs.file file("${project.projectDir}/package.json")
+        inputs.file file("${project.projectDir}/.eslintrc.js")
+    }
+
+    task licenseInfo(type: Exec, dependsOn: yarn) {
+        workingDir "${projectDir}"
+        commandLine '.gradle/yarn/yarn-v1.7.0/bin/yarn', 'run', 'license-checker', '--production', '--out', 'build/javascript-licenses.txt'
+        outputs.file file("${project.projectDir}/build/javascript-licenses.txt")
+        inputs.dir file("${project.projectDir}/public")
+        inputs.dir file("${project.projectDir}/src")
+        inputs.file file("${project.projectDir}/package.json")
+        inputs.file file("${project.projectDir}/.eslintrc.js")
+    }
+    task licenseText(type: Exec, dependsOn: yarn) {
+        workingDir "${projectDir}"
+        commandLine '.gradle/yarn/yarn-v1.7.0/bin/yarn', 'run', 'license-checker', '--production', '--customPath', 'customFormat.json', '--json', '--out', 'build/javascript-licensesText.json'
+        outputs.file file("${project.projectDir}/build/javascript-licensesText.json")
+        inputs.dir file("${project.projectDir}/public")
+        inputs.dir file("${project.projectDir}/src")
+        inputs.file file("${project.projectDir}/package.json")
+        inputs.file file("${project.projectDir}/.eslintrc.js")
+    }
+
+    task clean(type: Delete) {
+        delete "${project.projectDir}/dist"
+    }
+}
+
+
+project(':nusimloader-api') {
+    apply plugin: 'java'
+
+    group = 'de.scoopgmbh.nusimapp.loader.api'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        compile 'com.google.code.findbugs:jsr305:3.0.2'
+        compile "com.typesafe:config:${versions.tsConfig}"
+    }
+}
+
+
+project(':nusimapp') {
+    apply plugin: 'java'
+    apply plugin: 'application'
+
+    group = 'de.scoopgmbh.nusimapp'
+    mainClassName = "de.scoopgmbh.nusimapp.Main"
+
+    task readme {
+        def configFile = file("${projectDir}/src/main/resources/defaultConfig.json")
+        def readmeIn = file("${rootProject.projectDir}/readme.md")
+
+        def readmeOut = file("${buildDir}/docs/readme.md")
+        def htmlOut = file("${buildDir}/docs/readme.html")
+
+        inputs.file configFile
+        inputs.file readmeIn
+
+        outputs.file readmeOut
+        outputs.file htmlOut
+
+        doFirst() {
+            outputs.files.forEach({ f -> f.delete() })
+        }
+
+        doLast() {
+            def configParseOptions = ConfigParseOptions.defaults().setSyntax(ConfigSyntax.CONF)
+            def json = ConfigFactory.parseFile(configFile, configParseOptions).root().unwrapped()
+            def readme = readmeIn.text.replaceAll("\\\$\\{[^}]+}", { param ->
+                param = param - '${' - '}'
+                return Eval.x(json, 'x.' + param)
+            })
+            readmeOut << readme
+
+            htmlOut << '<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"></head><body>'
+
+            Parser parser = Parser.builder().build()
+            Node document = parser.parse(readme)
+            HtmlRenderer renderer = HtmlRenderer.builder().build()
+            htmlOut << renderer.render(document)
+
+            htmlOut << '</body></html>'
+        }
+    }
+
+    configurations.all {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
+    configurations {
+        runtimeSources
+    }
+
+
+    distributions {
+        main {
+            contents {
+                from(project(":gui")."build") {
+                    into "web"
+                }
+                from(project.tasks['readme'])
+                from(file("${projectDir}/src/main/resources/defaultConfig.json"))
+                from("${projectDir}/src/main/docs")
+                from("${rootDir}/CHANGELOG.md")
+            }
+        }
+    }
+    applicationDefaultJvmArgs = ["-DMY_APP_HOME"]
+
+    startScripts {
+        doLast {
+            unixScript.text = unixScript.text.replace('MY_APP_HOME', 'APP_HOME=\$APP_HOME')
+            windowsScript.text = windowsScript.text.replace('MY_APP_HOME', 'APP_HOME=%APP_HOME%')
+
+            unixScript.text = unixScript.text.replace('CLASSPATH=$APP_HOME', 'CLASSPATH=$APP_HOME/plugins/*:$APP_HOME')
+            windowsScript.text = windowsScript.text.replace('set CLASSPATH=', 'set CLASSPATH=%APP_HOME%\\plugins\\*;')
+        }
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        // Project
+        compile project(':nusimloader-api')
+
+        // Basics
+        compile "org.slf4j:slf4j-api:${versions.slf4j}"
+        compile "ch.qos.logback:logback-classic:${versions.logback}"
+        compile "org.slf4j:jul-to-slf4j:${versions.slf4j}"
+        compile "com.google.guava:guava:${versions.guava}"
+        compile "org.codehaus.janino:janino:3.0.7"
+        compile "com.typesafe:config:${versions.tsConfig}"
+        compile 'org.apache.commons:commons-compress:1.17'
+
+        // bean validation
+        compile 'javax.validation:validation-api:2.0.1.Final'
+        compile 'javax.activation:activation:1.1.1'
+        compile 'org.glassfish:javax.el:3.0.1-b09'
+        compile 'org.hibernate:hibernate-validator:6.0.10.Final'
+
+        // Web
+        compile "io.ratpack:ratpack-core:${versions.ratpack}"
+        compile "io.netty:netty-handler:4.1.29.Final"
+        compile 'org.eclipse.jetty:jetty-client:9.4.12.RC2'
+
+        // security
+        compile 'org.bouncycastle:bcprov-jdk15on:1.66'
+        compile 'org.bouncycastle:bctls-jdk15on:1.66'
+
+        //database
+        compile('org.liquibase.ext:liquibase-postgresql:3.0') {
+            exclude group: "postgresql"
+            exclude group: "org.eclipse.jetty"
+        }
+        compile 'org.postgresql:postgresql:42.2.2'
+        compile 'com.zaxxer:HikariCP:3.2.0'
+        compile "org.jooq:jooq:${versions.jooq}"
+        compile 'javax.annotation:javax.annotation-api:1.3.2'
+        runtime 'com.mattbertolini:liquibase-slf4j:2.0.0'
+
+        // Testing
+        testCompile "junit:junit:${versions.junit}"
+        testCompile "org.mockito:mockito-core:${versions.mockito}"
+        testCompile 'com.opentable.components:otj-pg-embedded:0.13.1'
+
+        configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { ResolvedArtifact ra ->
+            if (ra.id.class.name.equals("org.gradle.internal.component.external.model.DefaultModuleComponentArtifactIdentifier")) {
+                println(ra)
+                ModuleVersionIdentifier id = ra.moduleVersion.id
+                runtimeSources "${id.group}:${id.name}:${id.version}:sources"
+            }
+        }
+    }
+
+    task downloadOSDFSources(type: Zip) {
+        from configurations.runtimeSources
+        archiveFileName = "${buildDir}/distributions/nusimapp-${version}-librarySources.zip"
+        include "**sources.jar"
+    }
+
+    apply plugin: 'liquibase'
+    liquibase {
+        activities {
+            main {
+                changeLogFile "${project.projectDir}/src/main/resources/de/scoopgmbh/nusimapp/db/database.xml"
+                url "jdbc:postgresql://${postgresEmbedded.host}:${postgresEmbedded.port}/${postgresEmbedded.dbName}"
+                username postgresEmbedded.username
+                password postgresEmbedded.password
+            }
+        }
+        runList = 'main'
+    }
+
+    update.dependsOn startPostgres
+
+    task jooqCodeGen {
+        ext {
+            outputDir = "${project.projectDir}/src/generated/jooq"
+        }
+        outputs.dir file(ext.outputDir)
+        inputs.dir file("${project.projectDir}/src/main/resources/de/scoopgmbh/nusimapp/db")
+
+        doLast() {
+            def conf = new org.jooq.meta.jaxb.Configuration(
+                    jdbc: new Jdbc(
+                            driver: 'org.postgresql.Driver',
+                            url: "jdbc:postgresql://${postgresEmbedded.host}:${postgresEmbedded.port}/${postgresEmbedded.dbName}",
+                            user: postgresEmbedded.username,
+                            password: postgresEmbedded.password,
+                    ),
+                    generator: new Generator(
+                            database: new Database(
+                                    inputSchema: 'public'
+                            ),
+                            generate: new Generate(
+                                    pojos: true,
+                                    daos: true
+                            ),
+                            target: new Target(
+                                    packageName: 'de.scoopgmbh.nusimapp.db.jooq',
+                                    directory: ext.outputDir
+                            ),
+                    ),
+            )
+
+            GenerationTool.generate(conf)
+        }
+    }
+    jooqCodeGen.dependsOn update
+    sourceSets.main.java.srcDirs += jooqCodeGen.outputDir
+    compileJava.dependsOn jooqCodeGen
+
+    downloadLicenses {
+        ext.apacheTwo = license('Apache Software License, Version 2.0', 'http://opensource.org/licenses/Apache-2.0')
+        ext.bsd = license('BSD License', 'http://www.opensource.org/licenses/bsd-license.php')
+        ext.eclipse = license('Eclipse Public License - Version 1.0', 'http://www.eclipse.org/org/documents/epl-v10.php')
+        ext.mit = license('MIT License', 'http://www.opensource.org/licenses/mit-license.php')
+        ext.lgpl21 = license('GNU Lesser General Public License', 'http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html')
+
+        aliases = [
+                (apacheTwo): ['Apache Software License, Version 2.0', 'Apache Software License - Version 2.0', 'Apache License, version 2.0', 'The Apache Software License, Version 2.0', 'Apache 2', 'Apache 2.0', 'Apache License Version 2.0', 'Apache License, Version 2.0', 'Apache License 2.0', license('Apache License', 'http://www.apache.org/licenses/LICENSE-2.0')],
+                (bsd)      : ['BSD', license('New BSD License', 'http://www.opensource.org/licenses/bsd-license.php')],
+                (eclipse)  : ['Eclipse Public License - v 1.0'],
+                (mit)      : ['MIT license', 'The MIT License', 'MIT License'],
+                (lgpl21)   : ['LGPL 2.1'],
+        ]
+
+        dependencyConfiguration = 'runtime'
+    }
+}
+
+task licenses(type: Sync) {
+    from project(":gui").tasks.findByName("licenseInfo")
+    from project(":").tasks.findByName("downloadLicenses")
+    include '*.html'
+    include '*.txt'
+    into 'build/doc'
+}
+
+asciidoctorPdf() {
+    dependsOn ':osdfcreator:generateADocFile'
+    repositories {
+        jcenter()
+    }
+    sourceDir file('build/asciidocs')
+    sources {
+        include '*.adoc'
+    }
+}
+
+project(':osdfcreator') {
+    apply plugin: 'java'
+    apply plugin: 'application'
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    }
+    group = 'de.scoopgmbh.osdfcreator'
+    mainClassName = "de.scoopgmbh.osdfcreator.OSDFCreator"
+
+    task generateADocFile(type: JavaExec) {
+        dependsOn ':checkLicense'
+        dependsOn ':gui:licenseText'
+        classpath = sourceSets.main.runtimeClasspath
+        main = 'de.scoopgmbh.osdfcreator.OSDFCreator'
+        args = ["../build/asciidocs/nusimapp-${version}-osdf.adoc"]
+    }
+}
+
+import com.github.jk1.license.render.*
+import com.github.jk1.license.filter.*
+
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies, e.g. for Android projects. Default is 'runtimeClasspath'
+    configurations = ['runtime']
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+
+    // List the groups ids to exclude from dependency report. Supports regular expressions.
+    // For finer granularity, see: excludes.
+    // excludeGroups = ['do.not.want']
+
+    // List the ids (in module:name format) to exclude from dependency report. Supports regular expressions.
+    // By default excludes is empty.
+    // excludes = ['moduleGroup:moduleName']
+
+    // Don't include artifacts of project's own group into the report
+    excludeOwnGroup = true
+
+    // Normalizing something like "Apache 2" and ".*The Apache Software License, Version 2.0.*"
+    // to become "Apache License, Version 2.0"
+    filters = [new LicenseBundleNormalizer()]
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderers = [new JsonReportRenderer()]
+
+    // Set importers to import any external dependency information, i.e. from npm.
+    // Custom importer should implement DependencyDataImporter interface.
+    // importers = [new XmlReportImporter('Frontend dependencies', file(frontend_libs.xml))]
+
+    // This is for the allowed-licenses-file in checkLicense Task
+    // Accepts File, URL or String path to local or remote file
+    allowedLicensesFile = new File("$projectDir/allowedLicenses.json")
+}
+
+task createOSDF(type: Sync) {
+    from project(":").tasks.findByName("asciidoctorPdf").mustRunAfter(':osdfcreator:generateADocFile')
+    from project(":nusimapp").tasks.findByName("downloadOSDFSources");
+    into "build/osdf"
+}
+
+task srcZip(type: Zip, dependsOn: clean) {
+    archiveFileName = "${projectDir}/nusimapp/build/distributions/nusimapp-${version}-src.zip"
+    from "${projectDir}/"
+    include "**/*"
+    exclude "nusim-data/"
+    exclude "nusimapp/nusim-data/"
+    exclude "nusimapp/src/generated/"
+    exclude "gui/node_modules/"
+    exclude "**/.gradle/"
+    exclude "**/.idea/"
+    exclude "**/build/"
+    exclude "**/out/"
+
+    doFirst {
+        ant.defaultexcludes remove: "**/.gitignore"
+    }
+
+    doLast {
+        ant.defaultexcludes default: true
+    }
+}

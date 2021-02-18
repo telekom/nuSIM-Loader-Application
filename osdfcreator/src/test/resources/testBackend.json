@@ -1,0 +1,46 @@
+{
+  "dependencies": [
+    {
+      "moduleName": "ch.qos.logback:logback-classic",
+      "moduleUrl": "http://www.qos.ch",
+      "moduleVersion": "1.2.3",
+      "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1",
+      "moduleLicenseUrl": "https://www.gnu.org/licenses/lgpl-2.1"
+    },
+    {
+      "moduleName": "ch.qos.logback:logback-core",
+      "moduleUrl": "http://www.qos.ch",
+      "moduleVersion": "1.2.3",
+      "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1",
+      "moduleLicenseUrl": "https://www.gnu.org/licenses/lgpl-2.1"
+    },
+    {
+      "moduleName": "com.fasterxml.jackson.core:jackson-annotations",
+      "moduleUrl": "http://github.com/FasterXML/jackson",
+      "moduleVersion": "2.9.0",
+      "moduleLicense": "Apache License, Version 2.0",
+      "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    {
+      "moduleName": "com.fasterxml.jackson.core:jackson-core",
+      "moduleUrl": "https://github.com/FasterXML/jackson-core",
+      "moduleVersion": "2.9.4",
+      "moduleLicense": "Apache License, Version 2.0",
+      "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    {
+      "moduleName": "com.fasterxml.jackson.core:jackson-databind",
+      "moduleUrl": "http://github.com/FasterXML/jackson",
+      "moduleVersion": "2.9.4",
+      "moduleLicense": "Apache License, Version 2.0",
+      "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    {
+      "moduleName": "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml",
+      "moduleUrl": "https://github.com/FasterXML/jackson-dataformats-text",
+      "moduleVersion": "2.9.4",
+      "moduleLicense": "Apache License, Version 2.0",
+      "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
+}

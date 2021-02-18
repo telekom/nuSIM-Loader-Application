@@ -1,0 +1,187 @@
+[
+  {
+    "name": "if1",
+    "meta": {
+      "displayName": "DP Interface",
+      "generalName": "Profile Retrieval",
+      "children": [
+        {
+          "name": "url",
+          "meta": {
+            "displayName": "Base URL",
+            "type": "text"
+          }
+        },
+        {
+          "name": "certCM",
+          "meta": {
+            "displayName": "certCM ('not used' is keyword)",
+            "type": "text"
+          }
+        },
+        {
+          "name": "ssl",
+          "meta": {
+            "displayName": "TLS Configuration",
+            "children": [
+              {
+                "name": "certDir",
+                "meta": {
+                  "displayName": "Certificate Location",
+                  "type": "text"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "if3",
+    "meta": {
+      "displayName": "CM Interface",
+      "generalName": "Certificate Retrieval",
+      "children": [
+        {
+          "name": "url",
+          "meta": {
+            "displayName": "Base URL",
+            "type": "text"
+          }
+        },
+        {
+          "name": "ssl",
+          "meta": {
+            "displayName": "TLS Configuration",
+            "children": [
+              {
+                "name": "certDir",
+                "meta": {
+                  "displayName": "Certificate Location",
+                  "type": "text"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "server",
+    "meta": {
+      "displayName": "Management via Web GUI",
+      "children": [
+        {
+          "name": "port",
+          "meta": {
+            "displayName": "Listening Port",
+            "type": "number"
+          }
+        },
+        {
+          "name": "pathPrefix",
+          "meta": {
+            "displayName": "Path Prefix",
+            "type": "text"
+          }
+        },
+        {
+          "name": "ssl",
+          "meta": {
+            "displayName": "TLS Configuration",
+            "children": [
+              {
+                "name": "enabled",
+                "meta": {
+                  "displayName": "Require TLS",
+                  "type": "boolean"
+                }
+              },
+              {
+                "name": "certDir",
+                "meta": {
+                  "displayName": "Path to own certificates",
+                  "type": "text"
+                }
+              },
+              {
+                "name": "supportedProtocols",
+                "meta": {
+                  "displayName": "Supported Protocols",
+                  "type": "array"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "database",
+    "meta": {
+      "displayName": "Database",
+      "children": [
+        {
+          "name": "executeLogging",
+          "meta": {
+            "displayName": "Show SQL Executions in Logs",
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "username",
+          "meta": {
+            "displayName": "DB Username",
+            "type": "text"
+          }
+        },
+        {
+          "name": "password",
+          "meta": {
+            "displayName": "DB Password",
+            "type": "password"
+          }
+        },
+        {
+          "name": "jdbcURL",
+          "meta": {
+            "displayName": "DB URL (jdbc:<dbms>://<host>:<port>/<db path>)",
+            "type": "text"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "fileimport",
+    "meta": {
+      "displayName": "Bulk File Import",
+      "children": [
+        {
+          "name": "importBaseDir",
+          "meta": {
+            "displayName": "Base directory for files",
+            "type": "text"
+          }
+        },
+        {
+          "name": "eidFileEndings",
+          "meta": {
+            "displayName": "File suffixes for EID list files (one EID per line)",
+            "type": "array"
+          }
+        },
+        {
+          "name": "certificateFileEndings",
+          "meta": {
+            "displayName": "File suffixes for certificate file archives (one certificate per archive entry)",
+            "type": "array"
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "name": "provisioning",
+    "meta": {
+      "children": [
+        {
+          "name": "mode",
+          "meta": {
+            "displayName": "Provisioning Mode",
+            "type": "enum",
+            "selection": "single",
+            "enums": [
+              {
+                "key": "single",
+                "text": "Single Mode"
+              },
+              {
+                "key": "bulk",
+                "text": "Bulk Mode"
+              }
+            ]
+          }
+        },
+        {
+          "name": "certificateSource",
+          "meta": {
+            "displayName": "Certificate Source",
+            "type": "enum",
+            "selection": "single",
+            "enums": [
+              {
+                "key": "nusim",
+                "text": "nuSIM"
+              },
+              {
+                "key": "cm",
+                "text": "Chip Manufacturer"
+              },
+              {
+                "key": "db",
+                "text": "local Database"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

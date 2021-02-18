@@ -1,0 +1,186 @@
+#mainContent,
+#app,
+html,
+body,
+.maxheight {
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+}
+
+#mainContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontalFlex {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+}
+
+#mainContent > div {
+  flex: auto;
+  padding-bottom: 12px;
+  overflow-y: auto;
+  overflow: hidden;
+  low-x: hidden;
+}
+
+div.radio-group,
+div.input-group.checkbox,
+div.input-group--text-field {
+  border-top-style: inset;
+  border-top-width: 1px;
+  border-top-color: dimgrey;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+div.subsection {
+  font-weight: bolder;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  padding-left: 20px;
+}
+
+div.subsection-content {
+  padding-left: 36px;
+}
+
+div.dialog--active {
+  background-color: white;
+}
+
+.icon-invisible {
+  display: none;
+}
+
+/* Logging */
+
+#scrollport {
+  height: 50px;
+  overflow-y: auto;
+}
+
+.loggingtable {
+  width: 100%;
+}
+
+.loggingtable th {
+  text-align: left;
+}
+
+tr {
+  font-weight: bold;
+}
+
+tr.ERROR {
+  background-color: lightcoral;
+}
+
+tr.WARN {
+  background-color: orange;
+}
+
+tr.INFO {
+  background-color: lightgreen;
+}
+
+tr.DEBUG {
+  background-color: lightyellow;
+}
+
+/* Tooltips */
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-top: 32px;
+  margin-left: 20px;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  /*width: 120px;*/
+  padding: 10px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: -50%;
+  right: 115%;
+  margin-right: 10px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 100%; /* To the right of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* use style from telekom.com/en to show brand claim as text */
+.brand-claim {
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: right;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-size: 15px;
+  color: #fff;
+}
+
+/* overwrite vuetify design of dropdown menus */
+select {
+  -moz-appearance: menulist;
+  -webkit-appearance: menulist-button;
+}
+
+/* overwrite spacing of telekom menu */
+.brandnav-lvl-1 > ul {
+  padding-bottom: 0;
+}
+
+.brandnav-lvl-1 > ul > li {
+  margin-right: 0px;
+}
+
+/* always use pointer cursor for menu items */
+.brandnav-lvl-1 > ul > li {
+  cursor: pointer;
+}
+
+.brandnav-lvl-1 > ul > li > a.img {
+  padding: 0;
+}
+
+
+.dialog > .card {
+  border-color: black;
+  /* border: 2px; */
+  border-style: solid;
+  border-width: 1px;
+}

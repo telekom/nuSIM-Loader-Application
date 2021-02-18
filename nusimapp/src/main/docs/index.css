@@ -1,0 +1,43 @@
+html {
+    font-family: sans-serif;
+    padding: .5em;
+}
+
+code {
+    background-color: aliceblue;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-weight: bold;
+}
+
+ul {
+    padding-top: .5em;
+    padding-bottom: 1em;
+}
+
+/* COUNTING */
+
+body {
+    counter-reset: h2counter;
+}
+h1 {
+    counter-reset: h2counter;
+}
+h2 {
+    counter-reset: h3counter;
+}
+h2:before {
+    content: counter(h2counter) ".\0000a0\0000a0";
+    counter-increment: h2counter;
+}
+h3 {
+    counter-reset: h4counter;
+}
+h3:before {
+    content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    counter-increment: h3counter;
+}
+h4:before {
+    content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) ".\0000a0\0000a0";
+    counter-increment: h4counter;
+}

@@ -1,0 +1,27 @@
+{
+  "@fortawesome/fontawesome-common-types@0.1.7": {
+    "licenses": "Custom: https://img.shields.io/npm/v/",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "Dave Gandy",
+    "email": "dave@fontawesome.com",
+    "url": "http://twitter.com/davegandy",
+    "name": "@fortawesome/fontawesome-common-types",
+    "version": "0.1.7",
+    "licenseText": "Font Awesome Pro License\n------------------------\n\nFont Awesome Pro is commercial software that requires a paid license. Full\nFont Awesome Pro license: https://fontawesome.com/license.\n\n# Commercial License\nThe Font Awesome Pro commercial license allows you to pay for FA Pro once, own\nit, and use it just about everywhere you'd like.\n\n# Attribution\nAttribution is not required by the Font Awesome Pro commercial license.\n\n# Brand Icons\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-common-types",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-common-types/LICENSE.txt"
+  },
+  "@fortawesome/fontawesome-free-solid@5.0.13": {
+    "licenses": "(CC-BY-4.0 AND MIT)",
+    "repository": "https://github.com/FortAwesome/Font-Awesome",
+    "publisher": "Dave Gandy",
+    "email": "dave@fontawesome.com",
+    "url": "http://twitter.com/davegandy",
+    "name": "@fortawesome/fontawesome-free-solid",
+    "version": "5.0.13",
+    "licenseText": "Font Awesome Free License\n-------------------------\n\nFont Awesome Free is free, open source, and GPL friendly. You can use it for\ncommercial projects, open source projects, or really almost whatever you want.\nFull Font Awesome Free license: https://fontawesome.com/license.\n\n# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\nIn the Font Awesome Free download, the CC BY 4.0 license applies to all icons\npackaged as SVG and JS file types.\n\n# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)\nIn the Font Awesome Free download, the SIL OLF license applies to all icons\npackaged as web and desktop font files.\n\n# Code: MIT License (https://opensource.org/licenses/MIT)\nIn the Font Awesome Free download, the MIT license applies to all non-font and\nnon-icon files.\n\n# Attribution\nAttribution is required by MIT, SIL OLF, and CC BY licenses. Downloaded Font\nAwesome Free files already contain embedded comments with sufficient\nattribution, so you shouldn't need to do anything additional when using these\nfiles normally.\n\nWe've kept attribution comments terse, so we ask that you do not actively work\nto remove them from files, especially code. They're a great way for folks to \nlearn about Font Awesome.\n\n# Brand Icons\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**",
+    "path": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-free-solid",
+    "licenseFile": "/home/larsk/gitrepos/eagle/gui/node_modules/@fortawesome/fontawesome-free-solid/LICENSE.txt",
+    "typeOfLicense": "Permissive"
+  }
+}

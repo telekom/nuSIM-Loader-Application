@@ -1,0 +1,7 @@
+.gradle/
+.idea/
+nusimapp/src/generated/
+out/
+build/
+node_modules/
+**/nusim-data/

@@ -1,0 +1,7 @@
+/node_modules/**
+/dist/**
+/tests/unit/coverage/**
+_templates/**
+/public/assets/**
+**/*.min.css
+package.json

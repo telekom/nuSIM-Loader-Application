@@ -1,0 +1,22 @@
+#
+# docker-compose file to start a local PostgreSQL 10.x server
+#
+# Usage:
+#   $ docker-compose up
+# The server will listen on localhost:5432 and can be used with user "postgres",
+# password "postgres".
+#
+
+version: '3'
+
+services:
+  postgres:
+    image: postgres:10.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    #volumes:
+    #  - "./data:/var/lib/postgresql/data"
