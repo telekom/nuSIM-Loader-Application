@@ -1,0 +1,19 @@
+Copyright (c) 2020 Deutsche Telekom AG.
+
+This project is licensed under Apache License, Version 2.0; 
+you may not use them except in compliance with the License. 
+
+Contributors:
+-------------
+
+Software Development:
+
+Dirk Moebius, Scoop Software GmbH
+Michael Schaefers, Scoop Software GmbH
+
+Concept & Forward Thinking:
+
+Michael Dupre, ex. Deutsche Telekom
+Stefan Kaliner, Deutsche Telekom
+Klaus Krebs, Deutsche Telekom
+Ragnar Günther, Deutsche Telekom
