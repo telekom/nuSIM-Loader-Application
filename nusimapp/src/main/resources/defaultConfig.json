@@ -52,16 +52,25 @@
       "certDir": "server/src/test/resources/selfsignedcerts",
       "password": ""
     },
+    "proxyURI": "",
+    "proxyUser": "",
+    "proxyPass": "",
+    "bulkRequestAuthFlag": true,
     "maxContentSize": 20000000,
     "KpubDP": {}
   },
   "if3": {
     "adapterClass": "de.scoopgmbh.nusimapp.if3.IF3HTTPAdapter",
+    "eidPrefix": "",
+    "maxRequestQuantity": 100,
     "url": "http://localhost:14002/nusim/",
     "ssl": {
       "certDir": "server/src/test/resources/selfsignedcerts",
       "password": ""
     },
+    "proxyURI": "",
+    "proxyUser": "",
+    "proxyPass": "",
     "maxContentSize": 20000000
   },
   "nusimSimAdapter": {
@@ -71,6 +80,9 @@
       "certDir": "server/src/test/resources/selfsignedcerts",
       "password": ""
     },
+    "proxyURI": "",
+    "proxyUser": "",
+    "proxyPass": "",
     "maxContentSize": 20000000
   },
 //  "nusimSimAdapter": {

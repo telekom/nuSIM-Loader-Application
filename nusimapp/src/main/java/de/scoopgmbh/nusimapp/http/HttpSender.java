@@ -22,9 +22,15 @@
 package de.scoopgmbh.nusimapp.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.HttpProxy;
+import org.eclipse.jetty.client.ProxyAuthenticationProtocolHandler;
+import org.eclipse.jetty.client.api.Authentication;
+import org.eclipse.jetty.client.api.AuthenticationStore;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
+import org.eclipse.jetty.client.util.BasicAuthentication;
 import org.eclipse.jetty.client.util.InputStreamResponseListener;
 import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpField;
@@ -34,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -65,9 +72,35 @@ public class HttpSender {
 
         httpClient = new HttpClient(sslContext);
         httpClient.setConnectTimeout(CONNECT_TIMEOUT);
+
+        if (!Strings.isNullOrEmpty(httpSenderConfig.getProxyURI())) {
+            try {
+                configureProxy();
+            } catch (URISyntaxException | RuntimeException e) {
+                throw new Exception("Could not configure proxy for " + clientName + ": " + e);
+            }
+        }
 //        httpClient.setRequestBufferSize(httpSenderConfig.getMaxContentSize());
 //        httpClient.setResponseBufferSize(httpSenderConfig.getMaxContentSize());
         httpClient.start();
+    }
+
+    private void configureProxy() throws URISyntaxException {
+        URI proxyURI = new URI(httpSenderConfig.getProxyURI());
+        logger.debug("configuring {} to proxy requests via {}", clientName, proxyURI);
+        httpClient.getProxyConfiguration().getProxies().add(new HttpProxy(proxyURI.getHost(), proxyURI.getPort()));
+
+        if (!Strings.isNullOrEmpty(httpSenderConfig.getProxyUser())) {
+            logger.debug("configuring basic auth for {} proxy {} using user '{}' and pass '*****'", clientName, proxyURI, Authentication.ANY_REALM, httpSenderConfig.getProxyUser());
+
+            AuthenticationStore auth = httpClient.getAuthenticationStore();
+            auth.addAuthentication(new BasicAuthentication(
+                    proxyURI,
+                    Authentication.ANY_REALM,
+                    httpSenderConfig.getProxyUser(),
+                    httpSenderConfig.getProxyPass()));
+            httpClient.getProtocolHandlers().put(new ProxyAuthenticationProtocolHandler(httpClient));
+        }
     }
 
     public void stop() {

@@ -179,7 +179,7 @@ public class ProvisioningModule implements Managed {
     }
 
     private String pemToDer(String in) {
-        return in.replaceAll("(-+BEGIN CERTIFICATE-+\\n|\\n|-+END CERTIFICATE-+\\n)", "");
+        return in.replaceAll("(-+BEGIN CERTIFICATE-+|-+END CERTIFICATE-+|\\s)", "");
     }
 
     @Override

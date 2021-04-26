@@ -21,34 +21,35 @@
 
 package de.scoopgmbh.nusimapp.if3;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-public class GetCertFromCMRequest {
-    private String eid;
-    @JsonProperty("rootKeyID")
-    private String rootKeyId;
+public class GetBulkCertFromCMRequest {
+    
+    private final String rootKeyID;
+    private final List<EIDEntry> eidList;
 
-    public GetCertFromCMRequest() {
+    public GetBulkCertFromCMRequest(String rootKeyID, List<EIDEntry> eidList) {
+        this.rootKeyID = rootKeyID;
+        this.eidList = eidList;
     }
 
-    public GetCertFromCMRequest(String eid, String rootKeyId) {
-        this.eid = eid;
-        this.rootKeyId = rootKeyId;
+    public String getRootKeyID() {
+        return rootKeyID;
     }
 
-    public String getEid() {
-        return eid;
+    public List<EIDEntry> getEidList() {
+        return eidList;
     }
 
-    public void setEid(String eid) {
-        this.eid = eid;
-    }
+    public static final class EIDEntry {
+        private final String eid;
 
-    public String getRootKeyId() {
-        return rootKeyId;
-    }
+        public EIDEntry(String eid) {
+            this.eid = eid;
+        }
 
-    public void setRootKeyId(String rootKeyId) {
-        this.rootKeyId = rootKeyId;
+        public String getEid() {
+            return eid;
+        }
     }
 }

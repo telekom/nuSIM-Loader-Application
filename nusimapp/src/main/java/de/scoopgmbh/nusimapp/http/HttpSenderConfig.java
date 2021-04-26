@@ -26,6 +26,9 @@ public class HttpSenderConfig {
     private String url;
     private SSLClientConfig ssl;
     private int maxContentSize;
+    private String proxyURI;
+    private String proxyUser;
+    private String proxyPass;
 
     public String getUrl() {
         return url;
@@ -49,5 +52,29 @@ public class HttpSenderConfig {
 
     public void setMaxContentSize(int maxContentSize) {
         this.maxContentSize = maxContentSize;
+    }
+
+    public String getProxyURI() {
+        return proxyURI;
+    }
+
+    public void setProxyURI(String proxyURI) {
+        this.proxyURI = proxyURI;
+    }
+
+    public String getProxyUser() {
+        return proxyUser;
+    }
+
+    public void setProxyUser(String proxyUser) {
+        this.proxyUser = proxyUser;
+    }
+
+    public String getProxyPass() {
+        return proxyPass;
+    }
+
+    public void setProxyPass(String proxyPass) {
+        this.proxyPass = proxyPass;
     }
 }

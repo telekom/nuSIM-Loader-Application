@@ -46,13 +46,21 @@ public class LoadCertificatesHandler extends HttpHandler {
 
     @SuppressWarnings("WeakerAccess")
     public static final class LoadCertificatesResponse {
-        /** total number of EIDs in database */
+        /**
+         * total number of EIDs in database
+         */
         public final int total;
-        /** number of EIDs processed in this request (ie. number of EIDs without cert) */
+        /**
+         * number of EIDs processed in this request (ie. number of EIDs without cert)
+         */
         public final int processed;
-        /** number of EIDs processed sucessfully during this request */
+        /**
+         * number of EIDs processed sucessfully during this request
+         */
         public final int success;
-        /** number of EIDs processed with error during this request */
+        /**
+         * number of EIDs processed with error during this request
+         */
         public final int error;
 
         public LoadCertificatesResponse(int total, int processed, int success, int error) {
@@ -66,12 +74,12 @@ public class LoadCertificatesHandler extends HttpHandler {
     @Override
     protected void handleRequest(Context ctx, TypedData requestBody, ResponseContainer responseContainer) {
         try {
-            logger.info("start retrieving certificates for EIDs from CM");
-            LoadCertificatesResponse response = dao.visitBulkEIDs(eid -> {
-                logger.info("retrieving certificate for EID {}", eid);
-                return if3Adapter.getCertificate(eid, rootKeyId);
+            logger.info("start retrieving certificates for EIDs from CM. prefix: '{}', maxRequestQuantity: {}", if3Adapter.getEidPrefix(), if3Adapter.getMaxRequestQuantity());
+            LoadCertificatesResponse response = dao.visitBulkEIDs(if3Adapter.getEidPrefix(), if3Adapter.getMaxRequestQuantity(), eidList -> {
+                logger.info("retrieving certificate for {} EIDs", eidList.size());
+                return if3Adapter.getCertificates(eidList, rootKeyId);
             });
-            logger.info("finished retrieving certificates. {} total EIDs in DB, {} EIDs handled, {} successfully, {} errors", response.total, response.processed, response.success, response.error);
+            logger.info("finished retrieving certificates. {} total EIDs with prefix '{}' in DB, {} EIDs handled, {} successfully, {} errors", response.total, if3Adapter.getEidPrefix(), response.processed, response.success, response.error);
             ctx.render(objectMapper.writeValueAsString(response));
         } catch (Exception ex) {
             ctx.error(ex);

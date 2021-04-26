@@ -17,15 +17,15 @@
                             <v-list-tile-avatar>
                                 <img 
                                         :src="icon()"
-                                        :class="Number(new Date()) > item.availableAt.epochSecond * 1000 ? 'green' : 'red'">
+                                        :class="currentTime > item.availableAt.epochSecond * 1000 ? 'green' : 'red'">
                             </v-list-tile-avatar>
 
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    <b>ID {{ item.referenceId }} -
-                                    Available at {{ instantFormat(item.availableAt) }}</b>
+                                    <b>ID {{ item.referenceId }}</b>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
+                                    <div>Available at {{ instantFormat(item.availableAt) }}</div>
                                     <div>#{{ item.requestCount }} requested at {{ instantFormat(item.requestedAt) }}
                                     </div>
                                     <div>
@@ -85,13 +85,22 @@ export default {
       items: [],
       resolve: null,
       reject: null,
+      currentTime: '',
+      timer: '',
       options: {
         color: 'primary',
         width: 590,
       },
     }
   },
+  created() {
+    this.updateTime()
+    this.timer = setInterval(this.updateTime, 1000)
+  },
   methods: {
+    updateTime() {
+        this.currentTime = Number(new Date())
+    },
     instantFormat(instant) {
       return instantFormat(instant)
     },

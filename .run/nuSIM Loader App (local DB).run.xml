@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="nuSIM Loader App (local DB)" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="NUSIM_APP_DEV" value="gui/dist" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="de.scoopgmbh.nusimapp.Main" />
+    <module name="nuSIM-Loader-Application.nusimapp.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

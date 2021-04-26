@@ -24,23 +24,58 @@ package de.scoopgmbh.nusimapp.if3;
 import com.typesafe.config.Config;
 import de.scoopgmbh.nusimapp.LoaderAppApplicationContext;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 public abstract class IF3Adapter {
+
+    private final Config adapterConfig;
 
     /**
      * this constructor will be called by the adapter factory
+     *
      * @param adapterConfig the configuration section specific for this adapter
      * @see IF3HTTPAdapter for a reference implementation
      * @see IF3AdapterFactory for the adapter factory
      * @see LoaderAppApplicationContext#getIf3Adapter() for accessing the adapter
      */
     IF3Adapter(Config adapterConfig) {
+        this.adapterConfig = adapterConfig;
     }
 
     /**
-     * retrieves a certificate from the chip manufacturer
-     * @param eid the EID the certifcate is requested for
+     * retrieves a certificate from the chip manufacturer. This default implementation delegates to {@link #getCertificates(Collection, String)}
+     *
+     * @param eid       the EID the certificate is requested for
      * @param rootKeyId the root key ID to be used
      * @return the certificate in PEM format
+     * @see #getCertificates(Collection, String)
      */
-    public abstract String getCertificate(final String eid, String rootKeyId) throws IF3Exception;
+    public String getCertificate(String eid, String rootKeyId) throws IF3Exception {
+        Map<String, String> certificates = getCertificates(Collections.singletonList(eid), rootKeyId);
+        String cert = certificates.get(eid);
+        if (cert == null || cert.isEmpty()) {
+            throw new IF3Exception("no data for EID retrieved in response");
+        } else {
+            return cert;
+        }
+    }
+
+    /**
+     * retrieves certificates from the chip manufacturer
+     *
+     * @param eids      the EIDs the certifates are requested for
+     * @param rootKeyId the root key ID to be used
+     * @return a map containing all retrieved certificates, keyed by their eid
+     */
+    public abstract Map<String, String> getCertificates(final Collection<String> eids, String rootKeyId) throws IF3Exception;
+
+    public int getMaxRequestQuantity() {
+        return adapterConfig.getInt("maxRequestQuantity");
+    }
+
+    public String getEidPrefix() {
+        return adapterConfig.getString("eidPrefix");
+    }
 }

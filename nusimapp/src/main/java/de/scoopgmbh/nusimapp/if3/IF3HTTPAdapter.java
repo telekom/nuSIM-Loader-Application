@@ -25,8 +25,14 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
 import de.scoopgmbh.nusimapp.http.HttpSender;
 import de.scoopgmbh.nusimapp.http.HttpSenderConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class IF3HTTPAdapter extends IF3Adapter {
+    private static final Logger logger = LoggerFactory.getLogger(IF3HTTPAdapter.class);
     private HttpSender sender;
 
     public IF3HTTPAdapter(Config config) throws Exception {
@@ -37,9 +43,26 @@ public class IF3HTTPAdapter extends IF3Adapter {
     }
 
     @Override
-    public String getCertificate(String eid, String rootKeyId) throws IF3Exception {
+    public Map<String, String> getCertificates(Collection<String> eids, String rootKeyId) throws IF3Exception {
         try {
-            return sender.send("GetCertFromCM", new GetCertFromCMRequest(eid, rootKeyId), GetCertFromCMResponse.class).getCert();
+            List<GetBulkCertFromCMRequest.EIDEntry> eidEntries = eids.stream().map(GetBulkCertFromCMRequest.EIDEntry::new).collect(Collectors.toList());
+            GetBulkCertFromCMResponse response = sender.send("GetBulkCertificates", new GetBulkCertFromCMRequest(rootKeyId, eidEntries), GetBulkCertFromCMResponse.class);
+            if ("Error".equals(response.getStatus())) {
+                throw new IF3Exception("general error requesting " + eids.size() + " certificates: retrieved error code " + response.getError().getErrorCode() + ": " + response.getError().getErrorMessage());
+            } else {
+                Map<String, String> result = new HashMap<>();
+                for (GetBulkCertFromCMResponse.Certificate c : response.getResult().getCertificateList()) {
+                    if (c.getEid() == null) {
+                        continue;
+                    }
+                    if (c.getErrorCode() != null || c.getErrorMessage() != null) {
+                        logger.error("error code {} retrieved for EID {}: {}", c.getErrorCode(), c.getEid(), c.getErrorMessage());
+                    } else {
+                        result.put(c.getEid(), c.getCertNusim());
+                    }
+                }
+                return result;
+            }
         } catch (Exception e) {
             throw new IF3Exception(e);
         }

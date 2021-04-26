@@ -143,4 +143,16 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="7" author="SCOOP Software GmbH">
+        <createIndex tableName="EIDS" indexName="LOWER_CASE_EID_EIDS" unique="true">
+            <column name="LOWER(EID)"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="8" author="SCOOP Software GmbH">
+        <createIndex tableName="PROFILES" indexName="LOWER_CASE_EID_PROFILES" unique="true">
+            <column name="LOWER(EID)"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

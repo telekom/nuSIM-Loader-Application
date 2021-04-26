@@ -142,6 +142,26 @@ project(':nusimloader-api') {
     }
 }
 
+project(':nusimloader-plugin-huawei') {
+    apply plugin: 'java'
+
+    group = 'de.scoopgmbh.nusimapp.loader.plugin.huawei'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        compile project(':nusimloader-api')
+
+        compile 'com.fazecast:jSerialComm:2.5.1'
+        compile "org.slf4j:slf4j-api:${versions.slf4j}"
+        compile "com.google.guava:guava:${versions.guava}"
+        // Testing
+        testCompile "junit:junit:${versions.junit}"
+        testCompile "org.mockito:mockito-core:${versions.mockito}"
+    }
+}
 
 project(':nusimapp') {
     apply plugin: 'java'
@@ -228,6 +248,7 @@ project(':nusimapp') {
     dependencies {
         // Project
         compile project(':nusimloader-api')
+        runtime project(':nusimloader-plugin-huawei')
 
         // Basics
         compile "org.slf4j:slf4j-api:${versions.slf4j}"

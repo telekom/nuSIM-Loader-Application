@@ -20,6 +20,13 @@
           }
         },
         {
+          "name": "bulkRequestAuthFlag",
+          "meta": {
+            "displayName": "AUTH Flag for bulk requests",
+            "type": "boolean"
+          }
+        },
+        {
           "name": "ssl",
           "meta": {
             "displayName": "TLS Configuration",

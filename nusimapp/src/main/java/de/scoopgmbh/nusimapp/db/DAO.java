@@ -24,6 +24,7 @@ package de.scoopgmbh.nusimapp.db;
 import com.typesafe.config.Config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import de.scoopgmbh.BatchCollector;
 import de.scoopgmbh.nusimapp.db.jooq.tables.pojos.Profiles;
 import de.scoopgmbh.nusimapp.db.jooq.tables.records.EidsRecord;
 import de.scoopgmbh.nusimapp.db.jooq.tables.records.ProfilesRecord;
@@ -44,15 +45,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -122,7 +119,7 @@ public class DAO implements Managed {
     public void createRecord(final String eid, String refInfo1, String refInfo2, String refInfo3) {
         transactionManager.run(ctx -> {
             final Timestamp now = new Timestamp(System.currentTimeMillis());
-            ctx.deleteFrom(EIDS).where(EIDS.EID.eq(eid)).execute();
+            ctx.deleteFrom(EIDS).where(EIDS.EID.lower().eq(eid.toLowerCase())).execute();
             ctx.insertInto(EIDS).set(new EidsRecord(eid, now, now, null, null, null, refInfo1, refInfo2, refInfo3)).execute();
         });
     }
@@ -132,7 +129,7 @@ public class DAO implements Managed {
         transactionManager.run(ctx -> {
             eids.forEach((eid) -> {
                 final Timestamp now = new Timestamp(System.currentTimeMillis());
-                ctx.deleteFrom(PROFILES).where(PROFILES.EID.eq(eid)).execute();
+                ctx.deleteFrom(PROFILES).where(PROFILES.EID.lower().eq(eid.toLowerCase())).execute();
                 ctx.insertInto(PROFILES).set(new ProfilesRecord(eid, now, now, null, null, null, null, null, null, null, null)).execute();
                 i.incrementAndGet();
             });
@@ -151,14 +148,14 @@ public class DAO implements Managed {
     public void addNusimCertificate(final String eid, final String nusimCert) {
         transactionManager.run(ctx -> {
             final Timestamp now = new Timestamp(System.currentTimeMillis());
-            ctx.update(EIDS).set(EIDS.NUSIMCERT, nusimCert).set(EIDS.UPDATE_TS, now).where(EIDS.EID.eq(eid)).execute();
+            ctx.update(EIDS).set(EIDS.NUSIMCERT, nusimCert).set(EIDS.UPDATE_TS, now).where(EIDS.EID.lower().eq(eid.toLowerCase())).execute();
         });
     }
 
     public void addError(String eid, String errorText) {
         transactionManager.run(ctx -> {
             final Timestamp now = new Timestamp(System.currentTimeMillis());
-            ctx.update(EIDS).set(EIDS.ERRORTEXT, errorText).set(EIDS.UPDATE_TS, now).where(EIDS.EID.eq(eid)).execute();
+            ctx.update(EIDS).set(EIDS.ERRORTEXT, errorText).set(EIDS.UPDATE_TS, now).where(EIDS.EID.lower().eq(eid.toLowerCase())).execute();
         });
     }
 
@@ -169,7 +166,7 @@ public class DAO implements Managed {
     public void addIccid(String eid, String iccid) {
         transactionManager.run(ctx -> {
             final Timestamp now = new Timestamp(System.currentTimeMillis());
-            ctx.update(EIDS).set(EIDS.ICCID, iccid).set(EIDS.UPDATE_TS, now).where(EIDS.EID.eq(eid)).execute();
+            ctx.update(EIDS).set(EIDS.ICCID, iccid).set(EIDS.UPDATE_TS, now).where(EIDS.EID.lower().eq(eid.toLowerCase())).execute();
         });
     }
 
@@ -185,33 +182,34 @@ public class DAO implements Managed {
         });
     }
 
-    public LoadCertificatesResponse visitBulkEIDs(final CheckedFunction<String, String> certificateLoader) {
+    public LoadCertificatesResponse visitBulkEIDs(final String eidPrefix, final int maxRequestQuantity, final CheckedFunction<List<String>, Map<String, String>> certificateLoader) {
         return transactionManager.eval(ctx -> {
-            final int total = ctx.selectCount().from(PROFILES).fetchOne(0, int.class);
+            final int total = ctx.selectCount().from(PROFILES).where(PROFILES.EID.lower().startsWith(eidPrefix.toLowerCase())).fetchOne(0, int.class);
             final AtomicInteger processed = new AtomicInteger();
             final AtomicInteger success = new AtomicInteger();
             final AtomicInteger error = new AtomicInteger();
-            final Result<Record1<String>> records = ctx.select(PROFILES.EID).from(PROFILES).where(PROFILES.NUSIMCERT.isNull()).forUpdate().fetch();
-            records.stream().map(Record1::value1).forEach(eid -> {
-                processed.incrementAndGet();
-                try {
-                    ctx.transaction(inner -> {
-                        final String certificate = certificateLoader.apply(eid);
-                        inner.dsl().update(PROFILES)
-                                .set(PROFILES.NUSIMCERT, certificate)
-                                .set(PROFILES.UPDATE_TS, new Timestamp(System.currentTimeMillis()))
-                                .where(PROFILES.EID.eq(eid)).execute();
-                    });
-                    success.incrementAndGet();
-                } catch (Exception e) {
-                    if (ExceptionUtils.getRootCause(e) instanceof ConnectException) {
-                        // abort request
-                        throw new RuntimeException("Could not retrieve certificate for EID " + eid+ ": " + ExceptionUtils.getRootCause(e).getMessage());
-                    }
-                    logger.error("Could not retrieve certificate for EID {}: {}", eid, ExceptionUtils.getRootCause(e).getLocalizedMessage());
-                    error.incrementAndGet();
-                }
-            });
+            final Result<Record1<String>> records = ctx.select(PROFILES.EID).from(PROFILES).where(PROFILES.EID.lower().startsWith(eidPrefix.toLowerCase()).and(PROFILES.NUSIMCERT.isNull())).forUpdate().fetch();
+            records.stream().map(Record1::value1).
+                    collect(new BatchCollector<>(maxRequestQuantity, null, (eids, state) -> {
+                        processed.addAndGet(eids.size());
+                        try {
+                            Map<String, String> certificateMap = certificateLoader.apply(eids);
+                            error.addAndGet(eids.size() - certificateMap.size());
+                            certificateMap.entrySet().forEach(e -> {
+                                ctx.transaction(inner -> {
+                                    inner.dsl().update(PROFILES)
+                                            .set(PROFILES.NUSIMCERT, e.getValue())
+                                            .set(PROFILES.UPDATE_TS, new Timestamp(System.currentTimeMillis()))
+                                            .where(PROFILES.EID.eq(e.getKey())).execute();
+                                });
+                                success.incrementAndGet();
+                            });
+                        } catch (Exception e) {
+                            logger.error("Could not retrieve certificates: {}", ExceptionUtils.getRootCause(e).getLocalizedMessage());
+                            error.incrementAndGet();
+                        }
+                        return null;
+                    }));
             return new LoadCertificatesResponse(total, processed.get(), success.get(), error.get());
         });
     }

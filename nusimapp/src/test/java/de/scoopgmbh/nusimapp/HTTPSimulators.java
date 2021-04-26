@@ -77,7 +77,6 @@ public class HTTPSimulators {
                                     mainChain.prefix("sim", apiChain -> {
                                         apiChain.post("if1/GetKPubDP", new GetKPubDPHandler());
                                         apiChain.post("if1/GetEncProfile", new GetEncProfileHandler());
-                                        apiChain.post("if3/GetCertFromCM", new GetCertFromCMHandler());
                                         apiChain.post("nusim/GetSimData", new GetSimDataHandler());
                                         apiChain.post("nusim/LoadProfile", new LoadProfileHandler());
                                     });

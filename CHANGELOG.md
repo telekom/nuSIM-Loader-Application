@@ -1,6 +1,17 @@
 Changelog
 =========
 
+## v0.5.0
+- all HTTP connectors support proxy configuration: configure e.g. `/if1/proxyURI` to a validURI (e.g. `http://localhost:3128/`) to enable proxying requests to DP connector.
+  You can also configure `proxyUser`  and `proxyPass` to a non-empty value to enable basic authentication. Needs a restart
+- HUAWEI plugin is now available under `nusimloader-plugin-huawei` 
+- new Configuration `bulkRequestAuthFlag` availbale for `if1`, and can be changed without restart
+- EIDs are always requested case-insensitively from DB (although, still being stored as-is)
+- FIX: when converting from PEM to DER, certificates still contained whitespace characters
+- FIX: when a Profile becomes available while the RetrieveProfileDialog is open, the icon color changes accordingly
+- FIX: added a line break in RetrieveProfileDialog to always display the "Available at" timestamp correctly
+- FEATURE: IF3 interface enhanced to support bulk retrieval of certificates (breaks compatibility)
+
 ## v0.4.9 github 
 - removed directories docs, nusimloader-plugin-huawei
 - nusimloader-plugin-huawei section removed from  build.gradle

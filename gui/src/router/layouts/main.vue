@@ -136,9 +136,9 @@
           } else if (d.success === 0 && d.error === 0) {
             this.errorDialog('Certificate Retrieval', 'No Certificates loaded - there are no new EIDs without certificate data in database currently.')
           } else if (d.success === 0) {
-            this.errorDialog('Certificate Retrieval', `Error retrieving certificates. Of ${d.processed} EIDs, ${d.success} have been handled successfully and ${d.error} had errors.`)
+            this.errorDialog('Certificate Retrieval', `Error retrieving certificates. Of ${d.processed} EIDs, ${d.success} have been handled successfully and ${d.error} errors occurred.`)
           } else {
-            this.infoDialog('Certificate Retrieval', `Finished retrieving certificates. Of ${d.processed} EIDs, ${d.success} have been handled successfully and ${d.error} had errors.`)
+            this.infoDialog('Certificate Retrieval', `Finished retrieving certificates. Of ${d.processed} EIDs, ${d.success} have been handled successfully and ${d.error} errors occurred.`)
           }
         })
         .catch(error => {
