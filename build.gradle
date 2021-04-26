@@ -152,10 +152,10 @@ project(':nusimapp') {
 
     task readme {
         def configFile = file("${projectDir}/src/main/resources/defaultConfig.json")
-        def readmeIn = file("${rootProject.projectDir}/readme.md")
+        def readmeIn = file("${rootProject.projectDir}/README.md")
 
-        def readmeOut = file("${buildDir}/docs/readme.md")
-        def htmlOut = file("${buildDir}/docs/readme.html")
+        def readmeOut = file("${buildDir}/docs/README.md")
+        def htmlOut = file("${buildDir}/docs/README.html")
 
         inputs.file configFile
         inputs.file readmeIn
