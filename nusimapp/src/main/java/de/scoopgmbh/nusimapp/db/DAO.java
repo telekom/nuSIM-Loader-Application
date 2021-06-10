@@ -140,7 +140,7 @@ public class DAO implements Managed {
     public void createBulkRecord(final String eid, final String nusimCert) {
         transactionManager.run(ctx -> {
             final Timestamp now = new Timestamp(System.currentTimeMillis());
-            ctx.deleteFrom(PROFILES).where(PROFILES.EID.eq(eid)).execute();
+            ctx.deleteFrom(PROFILES).where(PROFILES.EID.lower().eq(eid.toLowerCase())).execute();
             ctx.insertInto(PROFILES).set(new ProfilesRecord(eid, now, now, nusimCert, null, null, null, null, null, null, null)).execute();
         });
     }
@@ -160,7 +160,7 @@ public class DAO implements Managed {
     }
 
     public Optional<String> getNusimCertificate(String eid) {
-        return transactionManager.eval(ctx -> ctx.select(PROFILES.NUSIMCERT).from(PROFILES).where(PROFILES.EID.eq(eid)).and(PROFILES.NUSIMCERT.isNotNull()).fetchOptional(EIDS.NUSIMCERT));
+        return transactionManager.eval(ctx -> ctx.select(PROFILES.NUSIMCERT).from(PROFILES).where(PROFILES.EID.lower().eq(eid.toLowerCase())).and(PROFILES.NUSIMCERT.isNotNull()).fetchOptional(EIDS.NUSIMCERT));
     }
 
     public void addIccid(String eid, String iccid) {
@@ -172,13 +172,13 @@ public class DAO implements Managed {
 
     public Profiles readProfile(String eid) {
         return transactionManager.eval(ctx -> {
-            return ctx.selectFrom(PROFILES).where(PROFILES.EID.eq(eid).and(PROFILES.MAC.isNotNull())).fetchOneInto(Profiles.class);
+            return ctx.selectFrom(PROFILES).where(PROFILES.EID.lower().eq(eid.toLowerCase()).and(PROFILES.MAC.isNotNull())).fetchOneInto(Profiles.class);
         });
     }
 
     public void deleteProfile(String eid) {
         transactionManager.run(ctx -> {
-            ctx.deleteFrom(PROFILES).where(PROFILES.EID.eq(eid)).execute();
+            ctx.deleteFrom(PROFILES).where(PROFILES.EID.lower().eq(eid.toLowerCase())).execute();
         });
     }
 
@@ -200,7 +200,7 @@ public class DAO implements Managed {
                                     inner.dsl().update(PROFILES)
                                             .set(PROFILES.NUSIMCERT, e.getValue())
                                             .set(PROFILES.UPDATE_TS, new Timestamp(System.currentTimeMillis()))
-                                            .where(PROFILES.EID.eq(e.getKey())).execute();
+                                            .where(PROFILES.EID.lower().eq(e.getKey().toLowerCase())).execute();
                                 });
                                 success.incrementAndGet();
                             });
@@ -220,7 +220,7 @@ public class DAO implements Managed {
     }
 
     public void addReferenceId(DSLContext ctx, List<RequestBulkEncProfilesRequest.Eid> unrequestedEIDs, String referenceId, ZonedDateTime retrieveTime, int count, String refInfo1, String refInfo2, String refInfo3) {
-        ctx.update(PROFILES).set(PROFILES.REFERENCE_ID, referenceId).where(PROFILES.EID.in(unrequestedEIDs.stream().map(eid -> eid.eid).collect(Collectors.toList()))).execute();
+        ctx.update(PROFILES).set(PROFILES.REFERENCE_ID, referenceId).where(PROFILES.EID.lower().in(unrequestedEIDs.stream().map(eid -> eid.eid.toLowerCase()).collect(Collectors.toList()))).execute();
         ctx.insertInto(REFERENCE_IDS).set(new ReferenceIdsRecord(referenceId, new Timestamp(System.currentTimeMillis()), count, refInfo1, refInfo2, refInfo3, new Timestamp(retrieveTime.toInstant().toEpochMilli()))).execute();
     }
 
@@ -252,7 +252,7 @@ public class DAO implements Managed {
                     .set(PROFILES.SIGEKPUB, p.getSigEKpubDP())
                     .set(PROFILES.SIGKPUBDP, sigKPubDP)
                     .set(PROFILES.UPDATE_TS, new Timestamp(System.currentTimeMillis()))
-                    .where(PROFILES.EID.eq(p.getEid())).execute();
+                    .where(PROFILES.EID.lower().eq(p.getEid().toLowerCase())).execute();
         }
         return updateCount;
     }
