@@ -49,49 +49,71 @@ implement the abstract methods:
 
 1. `getCertificate(eid, rootKeyId)` to retrieve the a certificate for the given EID and rootKeyId
 
-To acually _use_ the adapter, its class name has to be configured into the default configuration file (`defaultConfig.json`) at JSON path `if3.adapterClass`
+To acually _use_ the adapter, its class name has to be configured into the default configuration
+file (`defaultConfig.json`) at JSON path `if3.adapterClass`
 
-The adapter will have access to the JSON configuration residing below JSON path `if3`. Any needed parameters can be defined there.
+The adapter will have access to the JSON configuration residing below JSON path `if3`. Any needed parameters can be
+defined there.
 
 ## Build
 
-This software relies heavily on state-of-the-art tools `gradle `and `yarn`, and thus needs an internet connection to download Java and JavaScript Libraries on demand. In case you need to
-use a proxy, please refer to the gradle and yarn documentation, for example:
+### Requirements
+
+- latest Java 8 JDK
+
+#### Notice
+
+During the build, the build process needs an internet connection to download Java and JavaScript Libraries on demand.
+In case you need to use a proxy, please refer to the gradle and yarn documentation, for example:
 
 - https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy
 - https://www.jhipster.tech/configuring-a-corporate-proxy/
 
-To provide backward compatibility with Java 8 and newer, gradle has to be run with an up-to-date Java 8 JDK.
+### Building the Application / Creating a distribution ZIP
 
-### Building and developing the Web GUI
+You can build all artifacts - gui and server related - and wrap them into a distribution ZIP, by
+running  `./gradlew distZip` (Linux) from within the root folder of the project. Windows users can use the
+corresponding `gradlew.bat distZip`
+
+This will implicitly download all Java and Javascript dependencies, generate and compile all Java code, generate and
+transpile all JavaScript code and finally pack everthing together into a
+file `./nusimapp/build/distributions/nusimapp-<version>.zip`
+
+Create a source zip file with `./gradlew srcZip` (Windows: `gradlew.bat srcZip`). This creates a
+file `./nusimapp/build/distributions/nusimapp-<version>-src.zip`.
+
+Create OSDF library documentation with `./gradlew createOSDF` (Windows: `gradlew.bat createOSDF`). This creates the
+following files:
+
+- `./build/osdf/nusimapp-<version>-osdf.pdf` and
+- `./build/osdf/nusimapp-<version>-librarySources.zip`.
+
+#### Troubleshooting
+
+The build may occasionally hang in step `:gui:build` for several minutes. Unless there's no further error output, this
+is not a severe error condition. In this case, simply abort the process with `Ctrl-C` and continue
+with `./gradlew -x :gui:build distZip` or `gradlew.bat -x :gui:build distZip` respectively.
+
+This can be applied to any build task (simply add `-x :gui:build` as a command line parameter to `./gradlew`
+or `gradlew.bat`)
+
+### Building and developing the Web GUI only
 
 Base folder for the WebGUI is `./gui`. Run any commands from within this directory.
+Make sure the correct version of yarn is downloaded once by running `../gradlew yarn` (Windows: `..\gradlew.bat yarn`)
 
-Download all dependencies for the GUI by running `yarn install`
+Download all dependencies for the GUI by running `.gradle/yarn/yarn-v1.7.0/bin/yarn install`
 
-You can run the GUI in development mode by running `yarn dev`
+You can run the GUI in development mode by running `.gradle/yarn/yarn-v1.7.0/bin/yarn dev`
 
-You can build the production artifacts by running `yarn build`. These will then be built into `./gui/dist`
+You can build the production artifacts by running `.gradle/yarn/yarn-v1.7.0/bin/yarn build`. These will then be built
+into `.dist`
 
 ### Building and developing the Server
 
-Base forder for the server is `./nusimapp`. Run any commands from within this directory.
+Build the Server by running `./gradlew :nusimapp:build` (Windows: `gradlew.bat :nusimapp:build`)
 
-Build the Server by running `gradle build`
-
-Run the Server by runnint `gradle run`
-
-### Creating the distribution ZIP
-
-You can build all artifacts - gui and server related - and wrap them into a distribution ZIP, by running  `gradle distZip` from within the root folder of the project.
-
-This will implicitly download all Java and Javascript dependencies, generate and compile all Java code, generate and transpile all JavaScript code and finally pack everthing together into a file `./nusimapp/build/distributions/nusimapp-<version>.zip`
-
-Create a source zip file with `gradle srcZip`. This creates a file `./nusimapp/build/distributions/nusimapp-<version>-src.zip`.
-
-Create OSDF library documentation with `gradle createOSDF`. This creates the following files:
-- `./build/osdf/nusimapp-<version>-osdf.pdf` and
-- `./build/osdf/nusimapp-<version>-librarySources.zip`.
+Run the Server by running `./gradle :nusimapp:run` (Windows: `gradlew.bat :nusimapp:run`)
 
 ## Code of Conduct
 
