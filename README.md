@@ -9,13 +9,13 @@
 </p>
 
 <p align="center">
-  <a href="#documentation">Documentation</a> •
-  <a href="#Plug-In-Adapters">Plug-In Adapters</a> •
-  <a href="#build">Build</a> •
-  <a href="#support-and-feedback">Support</a> •
-  <a href="#how-to-contribute">Contribute</a> •
-  <a href="#contributors">Contributors</a> •
-  <a href="#licensing">Licensing</a>
+  <a href="#2-documentation">Documentation</a> •
+  <a href="#3-plug-in-adapters">Plug-In Adapters</a> •
+  <a href="#4-build">Build</a> •
+  <a href="#7-support-and-feedback">Support</a> •
+  <a href="#8-how-to-contribute">Contribute</a> •
+  <a href="#9-contributors">Contributors</a> •
+  <a href="#10-licensing">Licensing</a>
 </p>
 
 ## 1 About this project
