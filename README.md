@@ -24,7 +24,7 @@ The goal of this project is to provide a basic reference implementation of the n
 
 ## 2 Documentation
 
-### 2.1 Requirements
+### 2.1 System Requirements
 
 - Java 8 JRE with an up-to-date patch level
 - PostgreSQL DB Version 9 or later (see e.g. https://stackoverflow.com/questions/26441873/starting-postgresql-and-pgadmin-in-windows-without-installation for Windows installation of PostgreSQL), readily configured with a database and user. See section "Default Configuration" below.
@@ -33,11 +33,11 @@ The goal of this project is to provide a basic reference implementation of the n
     - Chrome 62+
     - Safari 10+
 
-### 2.2 Installation
+### 2.2 Set-Up & Installation
 
-There is no need for any further installation tasks. Also, no adminstrator / root access is needed to install the Application.
-It is delivered as a simple ZIP file or a TAR file.
-Unpack the delivery into a directory of your choice.
+The simplest way is to use the application ready-to-install. Therefore, go to "Releases" on the right side of the nuSIM Loader Application repository and select the latest release. Download the nusimapp-x.y.z.zip archive and unpack the delivery into a directory of your choice. If the system requirements in section 2.1 are met, there is no need for any further installation tasks. Also, no adminstrator / root access is needed to install the application.
+
+A less simple way is to build the application on your own as described in section 4. 
 
 ### 2.3 Starting the Application
 
